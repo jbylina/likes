@@ -5,9 +5,6 @@ import com.restfb.FacebookClient;
 import com.restfb.Parameter;
 import com.restfb.types.Post;
 
-/**
- * Created by jacek on 04.11.16.
- */
 public class FacebookFetcher {
 
 

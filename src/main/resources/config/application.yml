@@ -1,0 +1,5 @@
+spring:
+    mongodb:
+      embedded:
+        storage:
+          database-dir: target/embedded_mongodb/likes
