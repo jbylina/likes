@@ -9,7 +9,7 @@ public class FacebookFetcher {
 
 
     void getLikes() {
-        String accessToken = "EAACEdEose0cBACwf5ZBve9YXyLa0yvgZB8r5FyW7hwCwmhpHBGVHZBeXpngV6MkjNOAgKmFZB4eWuupOnwewxZAtFxVCrxrSu1M6DdYJY0X4SrJSki83jkoxJmgcOM0hTZAPcZBa48PctoPUmLWVvglZAFOGrV25fzWpeLlZCvcdpNZAXhVdxZBV3SQ";
+        String accessToken = "EAACEdEose0cBAAwbZBU0gyIgSwsjPBLHakKkLfA0g5IqvIZBX95dnbApCgFdDXEBoandQeI14vrbkMYrCZAdzGlt9jCPunFaahcFDd08RuPFOjVrkJe3e9dE729kdgbzts0ZAizwXHjSQa2buaR4LyO8fZBgt4MPd4arcC7ZBrg1zzAQSWtvCa";
 
         FacebookClient fbClient = new DefaultFacebookClient(accessToken);
 
@@ -23,6 +23,7 @@ public class FacebookFetcher {
         long commentsTotalCount = comments.getTotalCount();
 
         System.out.println(likesTotalCount);
+        //dodałem komentarz
     }
 
 
