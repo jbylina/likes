@@ -12,10 +12,10 @@ public class LikesStatsResource {
     @Autowired
     LikeStatsRepository statsRepository;
 
-    @RequestMapping("/")
+    /*@RequestMapping("/")
     public List<LikeStats> index() {
         return statsRepository.findAll();
-    }
+    }*/
 
     @RequestMapping("/test")
     public String test() {
