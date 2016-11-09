@@ -11,7 +11,7 @@ public class FacebookFetcherTest {
     public void shouldGetLikes() {
         FacebookFetcher fetcher = new FacebookFetcher();
 
-        fetcher.getLikes();
+        fetcher.getLikes("https://www.facebook.com/BuzzFeed/videos/10155273876115329/");
     }
 
 }
