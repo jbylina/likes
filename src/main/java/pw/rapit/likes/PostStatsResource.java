@@ -12,11 +12,11 @@ import java.util.Random;
 public class PostStatsResource {
 
     @Autowired
-    PostStatsRepository statsRepository;
+    PostStatsRepository postsRepository;
 
     @RequestMapping("/test_date")
     public List<PostStats> index() {
-        return statsRepository.findAll();
+        return postsRepository.findAll();
     }
 
     @RequestMapping("/test")
@@ -25,19 +25,19 @@ public class PostStatsResource {
         PostStats test = new PostStats("test");
         test.getLikes().add(like);
 
-        test = statsRepository.save(test);
+        test = postsRepository.save(test);
 
         return test.getId();
     }
 
     @RequestMapping("/test_new/{id}")
     public PostStats testNew(@PathVariable String id) {
-        PostStats postStats = statsRepository.findById(id);
+        PostStats postStats = postsRepository.findById(id);
 
         Like like = new Like(new Random().nextLong());
         postStats.getLikes().add(like);
 
-        statsRepository.save(postStats);
+        postsRepository.save(postStats);
         return postStats;
     }
 }
