@@ -5,9 +5,9 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.general.DefaultPieDataset;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import java.io.*;
@@ -18,6 +18,10 @@ import java.util.Set;
 @RestController
 public class LikesXYChart {
 
+    @Autowired
+    private PostStatsRepository postStatsRepository;
+
+
     private HashMap<Integer, Integer> getLikes() {
         HashMap<Integer, Integer> likesMap = new HashMap<>();
         likesMap.put(0,1);likesMap.put(1,2);likesMap.put(2,5);likesMap.put(3,15);
@@ -26,6 +30,11 @@ public class LikesXYChart {
         likesMap.put(15,47);likesMap.put(20,50);likesMap.put(25,52);likesMap.put(30,55);
         likesMap.put(40,56);likesMap.put(50,56);likesMap.put(60,56);likesMap.put(70,57);
         return likesMap;
+    }
+
+    @RequestMapping("/getPost/{idPost}")
+    public PostStats getPost(@PathVariable String idPost) {
+        return postStatsRepository.findById(idPost);
     }
 
     @RequestMapping(value = "/chart", method = RequestMethod.GET, produces = MediaType.IMAGE_JPEG_VALUE)
@@ -55,12 +64,12 @@ public class LikesXYChart {
         String property = System.getProperty("user.dir");
 
         try {
-            ChartUtilities.saveChartAsJPEG(new File(property + "//chart.jpg"), chart, 500, 300);
+            ChartUtilities.saveChartAsJPEG(new File(property + "/chart.jpg"), chart, 500, 300);
         } catch (Exception e) {
             System.out.println("Problem occurred creating chart.");
         }
 
-        InputStream in = new BufferedInputStream(new FileInputStream(property + "//chart.jpg"));
+        InputStream in = new BufferedInputStream(new FileInputStream(property + "/chart.jpg"));
         return IOUtils.toByteArray(in);
     }
 }

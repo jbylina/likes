@@ -4,41 +4,115 @@
     <title>Static</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
+    <script type="text/javascript">
+        window.onload = function () {
+
+
+            $.get("/getPost/5824aba2cd4f842afef5fdd3", function( data ) {
+
+                var chart_data = {
+                    title:{
+                        text: data['postTitle']
+                    },
+                    data: [
+                        {
+                            type: "spline",
+                            dataPoints: []
+                        }
+
+                    ]
+                };
+
+                data.likes.forEach(function (like) {
+                    chart_data.data[0].dataPoints.push({x: new Date(like.date), y: like.count})
+                });
+
+                var chart = new CanvasJS.Chart("chartContainer", chart_data);
+
+                chart.render();
+            });
+        }
+    </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+
+
+    <script>
+        (function(d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "//connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.8";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+    </script>
+
+    <style media="screen" type="text/css">
+
+        #main_container {
+           margin: 0 auto;
+           width: 75%;
+           background-color: #61A39A;
+        }
+
+        h1, h2 {
+            color: #D6FFF9;
+            margin: 0 auto;
+            width: 35%;
+        }
+
+        #content {
+            padding: 30px;
+        }
+
+        #header {
+            background-color: #04352E;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        #fb-post {
+            padding: 10px;
+            margin:0 auto;
+            width: 500px;
+        }
+
+        #chartContainer {
+            padding: 10px;
+            margin:0 auto;
+            width: 500px;
+        }
+
+    </style>
+
 </head>
 <body>
 
-<div id="fb-root"></div>
-<script>
-    (function(d, s, id) {
-        var js, fjs = d.getElementsByTagName(s)[0];
-        if (d.getElementById(id)) return;
-        js = d.createElement(s); js.id = id;
-        js.src = "//connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v2.8";
-        fjs.parentNode.insertBefore(js, fjs);
-    }(document, 'script', 'facebook-jssdk'));
-</script>
 
-<div class="jumbotron">
-    <h1>Strona KN RAPIT</h1>
-    <h2>Projekt: "Likes"</h2>
-    <p>
-        <a href="/chart">Zobacz wykres przyrostu liczby lajków tego posta.</a>
-    </p>
 
+<div id="main_container">
+
+
+    <div id="header">
+            <h1>Strona KN RAPIT</h1>
+            <h2>Projekt: "Likes"</h2>
+    </div>
+
+    <div id="content">
+        <!-- embedded maxK post -->
+        <div id="fb-post">
+            <div class="fb-post" data-href="https://www.facebook.com/M.Max.Kolonko/photos/a.504362586321845.1073741827.360623464029092/1212345432190220/?type=3&amp;theater" data-width="500" data-show-text="false">
+                <blockquote cite="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0" class="fb-xfbml-parse-ignore">
+                    <p>MaxTwit https://twitter.com/maxkolonko</p>
+                    Opublikowany przez
+                    <a href="https://www.facebook.com/M.Max.Kolonko/">Mariusz Max Kolonko</a> na&nbsp;
+                    <a href="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0">8 listopad 2016</a>
+                </blockquote>
+            </div>
+        </div>
+        <div id="chartContainer" style="height: 340px; width: 100%;"></div>
+    </div>
 </div>
-
-<!-- embedded maxK post -->
-<div class="fb-post" data-href="https://www.facebook.com/M.Max.Kolonko/photos/a.504362586321845.1073741827.360623464029092/1212345432190220/?type=3&amp;theater" data-width="500" data-show-text="false">
-    <blockquote cite="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0" class="fb-xfbml-parse-ignore">
-        <p>MaxTwit https://twitter.com/maxkolonko</p>
-        Opublikowany przez
-        <a href="https://www.facebook.com/M.Max.Kolonko/">Mariusz Max Kolonko</a> na&nbsp;
-        <a href="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0">8 listopad 2016</a>
-    </blockquote>
-
-</div>
-
-
 
 </body>
 </html>
