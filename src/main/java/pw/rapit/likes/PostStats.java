@@ -5,7 +5,7 @@ import org.springframework.data.annotation.Id;
 import java.util.ArrayList;
 import java.util.List;
 
-public class LikeStats {
+public class PostStats {
 
     @Id
     private String id;
@@ -14,7 +14,7 @@ public class LikeStats {
 
     private List<Like> likes;
 
-    public LikeStats(String postTitle) {
+    public PostStats(String postTitle) {
         this.postTitle = postTitle;
         this.likes = new ArrayList<>();
     }

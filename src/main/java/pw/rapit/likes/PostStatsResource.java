@@ -9,20 +9,20 @@ import java.util.List;
 import java.util.Random;
 
 @RestController
-public class LikesStatsResource {
+public class PostStatsResource {
 
     @Autowired
-    LikeStatsRepository statsRepository;
+    PostStatsRepository statsRepository;
 
     @RequestMapping("/test_date")
-    public List<LikeStats> index() {
+    public List<PostStats> index() {
         return statsRepository.findAll();
     }
 
     @RequestMapping("/test")
     public String test() {
         Like like = new Like(10L);
-        LikeStats test = new LikeStats("test");
+        PostStats test = new PostStats("test");
         test.getLikes().add(like);
 
         test = statsRepository.save(test);
@@ -31,13 +31,13 @@ public class LikesStatsResource {
     }
 
     @RequestMapping("/test_new/{id}")
-    public LikeStats testNew(@PathVariable String id) {
-        LikeStats likeStats = statsRepository.findById(id);
+    public PostStats testNew(@PathVariable String id) {
+        PostStats postStats = statsRepository.findById(id);
 
         Like like = new Like(new Random().nextLong());
-        likeStats.getLikes().add(like);
+        postStats.getLikes().add(like);
 
-        statsRepository.save(likeStats);
-        return likeStats;
+        statsRepository.save(postStats);
+        return postStats;
     }
 }
