@@ -7,5 +7,4 @@ import java.util.List;
 public interface LikeStatsRepository extends MongoRepository<LikeStats, String> {
 
     LikeStats findById(String id);
-    List<LikeStats> findByPostId(String postId);
 }

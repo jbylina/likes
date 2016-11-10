@@ -2,30 +2,32 @@ package pw.rapit.likes;
 
 import org.springframework.data.annotation.Id;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class LikeStats {
 
     @Id
     private String id;
 
-    private String postId;
+    private String postTitle;
 
-    public LikeStats(String postId) {
-        this.postId = postId;
+    private List<Like> likes;
+
+    public LikeStats(String postTitle) {
+        this.postTitle = postTitle;
+        this.likes = new ArrayList<>();
     }
 
     public String getId() {
         return id;
     }
 
-    public String getPostId() {
-        return postId;
+    public String getPostTitle() {
+        return postTitle;
     }
 
-    @Override
-    public String toString() {
-        return "LikeStats{" +
-                "id='" + id + '\'' +
-                ", postId='" + postId + '\'' +
-                '}';
+    public List<Like> getLikes() {
+        return likes;
     }
 }
