@@ -14,7 +14,7 @@ public class FacebookFetcher {
         fbClient = new LoggedInFacebookClient(appId, secretKey);
     }
 
-    void getLikes(String url) {
+    Like getLikes(String url) {
         //some url's have / as last char
         if(url.substring(url.length()-1,url.length()).equals("/"))
             url = url.substring(1,url.length()-1);
@@ -25,7 +25,7 @@ public class FacebookFetcher {
                 Parameter.with("summary", 1), Parameter.with("limit", 0));
         long likesTotalCount = likes.getTotalCount();
 
-        System.out.println(likesTotalCount);
+        return new Like(likesTotalCount);
 
 
 
