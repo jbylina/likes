@@ -1,9 +1,7 @@
 package pw.rapit.likes;
 
-import com.restfb.DefaultFacebookClient;
-import com.restfb.FacebookClient;
-import com.restfb.Parameter;
-import com.restfb.Version;
+import com.restfb.*;
+import com.restfb.types.Page;
 import com.restfb.types.Post;
 
 public class FacebookFetcher {
@@ -14,7 +12,7 @@ public class FacebookFetcher {
         fbClient = new LoggedInFacebookClient(appId, secretKey);
     }
 
-    Like getLikes(String url) {
+    public Like getLikes(String url) {
         //some url's have / as last char
         if(url.substring(url.length()-1,url.length()).equals("/"))
             url = url.substring(1,url.length()-1);
@@ -29,6 +27,12 @@ public class FacebookFetcher {
 
 
 
+    }
+
+    public String[] getPostsLinks(String pageUrl){
+        Page page =  fbClient.fetchObject(pageUrl, Page.class);
+        Connection<Post> pageFeed = fbClient.fetchConnection(page.getId() + "/feed", Post.class);
+        return new String[0];
     }
 
     public class LoggedInFacebookClient extends DefaultFacebookClient {
