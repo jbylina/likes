@@ -29,7 +29,7 @@ public class FacebookFetcherTest {
         FacebookFetcher fetcher = new FacebookFetcher("1774967242758495", "df4be9b7a5bb62ab33c632fcf87d565f");
 
         //returns arraylist
-        //todo: this should return list of objects that contains
+        //todo: this should return list of objects that contains date and id and post name (first line?)
         List<Post> urlArray = fetcher.getPostsLinks("https://www.facebook.com/BuzzFeed", 20);
 
         for(Post a : urlArray)
