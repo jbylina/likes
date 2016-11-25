@@ -1,5 +1,7 @@
 package pw.rapit.likes;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +12,8 @@ import java.util.Random;
 
 @RestController
 public class PostStatsResource {
+
+    static final Logger LOG = LoggerFactory.getLogger(PostStatsResource.class);
 
     @Autowired
     PostStatsRepository postsRepository;

@@ -4,11 +4,15 @@ import com.restfb.*;
 import com.restfb.experimental.api.Posts;
 import com.restfb.types.Page;
 import com.restfb.types.Post;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+
+import static org.apache.commons.lang3.StringUtils.*;
+import static org.apache.commons.lang3.StringUtils.endsWith;
 
 public class FacebookFetcher {
 
@@ -19,10 +23,23 @@ public class FacebookFetcher {
     }
 
     public Like getLikes(String url) {
-        //some url's have / as last char
-        if(url.substring(url.length()-1,url.length()).equals("/"))
-            url = url.substring(1,url.length()-1);
+
+        if (endsWith(url, "/")) {
+            url = substringBeforeLast(url, "/");
+        }
+
         String postId = url.substring(url.lastIndexOf("/")+1,url.length());
+
+        Post post = fbClient.fetchObject(postId, Post.class);
+        Post.Likes likes = fbClient.fetchObject(post.getId() + "/likes", Post.Likes.class,
+                Parameter.with("summary", 1), Parameter.with("limit", 0));
+        long likesTotalCount = likes.getTotalCount();
+
+        return new Like(likesTotalCount);
+    }
+
+    public Like getLikesById(String postId) {
+
 
         Post post = fbClient.fetchObject(postId, Post.class);
         Post.Likes likes = fbClient.fetchObject(post.getId() + "/likes", Post.Likes.class,
