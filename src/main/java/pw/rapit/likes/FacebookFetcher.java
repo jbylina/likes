@@ -38,6 +38,17 @@ public class FacebookFetcher {
         return new Like(likesTotalCount);
     }
 
+    public Like getLikesById(String postId) {
+
+
+        Post post = fbClient.fetchObject(postId, Post.class);
+        Post.Likes likes = fbClient.fetchObject(post.getId() + "/likes", Post.Likes.class,
+                Parameter.with("summary", 1), Parameter.with("limit", 0));
+        long likesTotalCount = likes.getTotalCount();
+
+        return new Like(likesTotalCount);
+    }
+
     public List getPostsLinks(String pageUrl, int hours){
         Page page =  fbClient.fetchObject(pageUrl, Page.class);
         Connection<Post> pageFeed = fbClient.fetchConnection(page.getId() + "/feed", Post.class);

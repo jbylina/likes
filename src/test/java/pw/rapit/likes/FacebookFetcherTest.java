@@ -28,11 +28,22 @@ public class FacebookFetcherTest {
     public void shouldGetPosts(){
         FacebookFetcher fetcher = new FacebookFetcher("1774967242758495", "df4be9b7a5bb62ab33c632fcf87d565f");
 
-        //returns linkedlist
+        //returns arraylist
+        //todo: this should return list of objects that contains
         List<Post> urlArray = fetcher.getPostsLinks("https://www.facebook.com/BuzzFeed", 20);
 
         for(Post a : urlArray)
             System.out.println(a.toString());
+
+    }
+
+    @Test
+    public void shouldGetLikesById(){
+        FacebookFetcher fetcher = new FacebookFetcher("1774967242758495", "df4be9b7a5bb62ab33c632fcf87d565f");
+
+        Like testLike = fetcher.getLikesById("10154425314162713");
+
+        LOG.debug("Ilosc likeów {} data: {} ", testLike.getCount(), testLike.getDate());
 
     }
 
