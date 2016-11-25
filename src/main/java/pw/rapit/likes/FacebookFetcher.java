@@ -1,8 +1,12 @@
 package pw.rapit.likes;
 
 import com.restfb.*;
+import com.restfb.experimental.api.Posts;
 import com.restfb.types.Page;
 import com.restfb.types.Post;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class FacebookFetcher {
 
@@ -24,15 +28,24 @@ public class FacebookFetcher {
         long likesTotalCount = likes.getTotalCount();
 
         return new Like(likesTotalCount);
-
-
-
     }
 
-    public String[] getPostsLinks(String pageUrl){
+    public List getPostsLinks(String pageUrl){
         Page page =  fbClient.fetchObject(pageUrl, Page.class);
         Connection<Post> pageFeed = fbClient.fetchConnection(page.getId() + "/feed", Post.class);
-        return new String[0];
+
+        List<Post> urlArray;
+
+        urlArray = pageFeed.getData();
+
+        /*
+        while (pageFeed.hasNext()) {
+            urlArray.add(pageFeed.getNextPageUrl());
+            pageFeed = fbClient.fetchConnectionPage(pageFeed.getNextPageUrl(),Post.class);
+        }
+        */
+
+        return urlArray;
     }
 
     public class LoggedInFacebookClient extends DefaultFacebookClient {
