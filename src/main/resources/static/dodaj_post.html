@@ -1,0 +1,47 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+        <title>Dodaj post</title>
+
+        <link rel="stylesheet" type="text/css" href="css/style.css" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta charset="utf-8">
+    </head>
+
+    <body>
+        <div id="wrapper">
+            <div id="logo">
+                <img id="logo_pic" src="images/logo.png" />
+            </div>
+            <div id="menu">
+                <ul>
+                    <li><a href="index.html">Strona główna</a></li>
+                    <li><a href="#" class="active">Dodaj post</a></li>
+                    <li><a href="#">Przeglądaj posty</a></li>
+                    <li><a href="#">Autorzy</a></li>
+                </ul>
+            </div>
+            <div id="header">
+                <img src="images/chart.png" style="float: right" height="290px"/>
+                <div id="title_head">
+                    <h2>Tutaj możesz wybrać facebookwy post - my będziemy go obserwować.</h2>
+                    <span>Wyszukaj i dodaj świeży facebookowy post a my postaramy się zebrać informacje o o tym jak szybko
+                    użytkownicy będą go lajkować.</span>
+                </div>
+            </div>
+            <div id="solid">
+                <form id="Formularz" name="Formularz" method="post" action="skrypt_przetwarzajacy.php">
+                    <fieldset>
+                        <legend>Podaj link do postu</legend>
+                        <label for="Link">Link:</label>
+                        <input type="text" name="Link" id="Link" value="" width="400px"/>
+                    </fieldset>
+                </form>
+            </div>
+            <div id="footer">
+                <p>&copy Warszawa 2016 <br /><a href="https://rapit.pw/">Koło naukowe RAPIT</a></p>
+            </div>
+        </div>
+    </body>
+</html>
