@@ -23,11 +23,12 @@ public class FacebookFetcherTest {
     public void shouldGetPosts(){
         FacebookFetcher fetcher = new FacebookFetcher("1774967242758495", "df4be9b7a5bb62ab33c632fcf87d565f");
 
-        List<Post> urlArray = fetcher.getPostsLinks("https://www.facebook.com/BuzzFeed");
+        //returns linkedlist
+        List<Post> urlArray = fetcher.getPostsLinks("https://www.facebook.com/BuzzFeed", 20);
 
-        for(Post a : urlArray){
-            System.out.println(a);
-        }
+        for(Post a : urlArray)
+            System.out.println(a.toString());
+
     }
 
 }

@@ -6,6 +6,8 @@ import com.restfb.types.Page;
 import com.restfb.types.Post;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 public class FacebookFetcher {
@@ -30,21 +32,26 @@ public class FacebookFetcher {
         return new Like(likesTotalCount);
     }
 
-    public List getPostsLinks(String pageUrl){
+    public List getPostsLinks(String pageUrl, int hours){
         Page page =  fbClient.fetchObject(pageUrl, Page.class);
         Connection<Post> pageFeed = fbClient.fetchConnection(page.getId() + "/feed", Post.class);
 
         List<Post> urlArray;
 
-        urlArray = pageFeed.getData();
-
+        urlArray = new ArrayList<Post>(pageFeed.getData());
         /*
         while (pageFeed.hasNext()) {
             urlArray.add(pageFeed.getNextPageUrl());
             pageFeed = fbClient.fetchConnectionPage(pageFeed.getNextPageUrl(),Post.class);
         }
         */
-
+        //removes posts older than 1 hour
+        Date now = new Date();
+        List<Post> temp = new ArrayList<Post>(urlArray);
+        for(Post post : temp){
+            if(now.getTime() - post.getCreatedTime().getTime() > hours*60*60*1000)
+                urlArray.remove(post);
+        }
         return urlArray;
     }
 
