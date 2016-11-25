@@ -1,7 +1,10 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-    <title>Static</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>RAPIT-likes</title>
+
+    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/canvasjs/1.7.0/canvasjs.js"></script>
@@ -60,66 +63,49 @@
     </script>
 
 
-    <style media="screen" type="text/css">
-        #main_container {
-            margin: 0 auto;
-            width: 75%;
-            background-color: #61A39A;
-        }
-        h1, h2 {
-            color: #D6FFF9;
-            margin: 0 auto;
-            width: 35%;
-        }
-        #content {
-            padding: 30px;
-        }
-        #header {
-            background-color: #04352E;
-            margin: 0 auto;
-            width: 100%;
-        }
-        #fb-post {
-            padding: 10px;
-            margin:0 auto;
-            width: 500px;
-        }
-        #chartContainer {
-            padding: 10px;
-            margin:0 auto;
-            width: 600px;
-            height: 400px;
-        }
-    </style>
-
 </head>
+
 <body>
-
-
-
-<div id="main_container">
-
-
-    <div id="header">
-        <h1>Strona KN RAPIT</h1>
-        <h2>Projekt: "Likes"</h2>
-    </div>
-
-    <div id="content">
-        <!-- embedded maxK post -->
-        <div id="fb-post">
-            <div class="fb-post" data-href="https://www.facebook.com/M.Max.Kolonko/photos/a.504362586321845.1073741827.360623464029092/1212345432190220/?type=3&amp;theater" data-width="500" data-show-text="false">
-                <blockquote cite="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0" class="fb-xfbml-parse-ignore">
-                    <p>MaxTwit https://twitter.com/maxkolonko</p>
-                    Opublikowany przez
-                    <a href="https://www.facebook.com/M.Max.Kolonko/">Mariusz Max Kolonko</a> na&nbsp;
-                    <a href="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0">8 listopad 2016</a>
-                </blockquote>
+    <div id="wrapper">
+        <div id="logo">
+            <img id="logo_pic" src="images/logo.png" />
+        </div>
+        <div id="menu">
+            <ul>
+                <li><a href="#" class="active">Strona główna</a></li>
+                <li><a href="#">Dodaj post</a></li>
+                <li><a href="#">Przeglądaj posty</a></li>
+                <li><a href="#">Autorzy</a></li>
+            </ul>
+        </div>
+        <div id="header">
+                <img src="images/chart.png" style="float: right" height="290px"/>
+            <div id="title_head">
+                <h2>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</h2>
+                <span>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac erat eget urna faucibus pellentesque sit amet eget metus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Cras ac erat eget urna faucibus pellentesque sit amet eget metus.</span>
+                <p>
+                    <br />
+                    <a href="#">Lorem ipsum</a>
+                    <a href="#" class="margin1">Lorem ipsum</a>
+                </p>
             </div>
         </div>
-        <div id="chartContainer"></div>
+        <div id="solid">
+                <div id="fb-post">
+                    <div class="fb-post" data-href="https://www.facebook.com/M.Max.Kolonko/photos/a.504362586321845.1073741827.360623464029092/1212345432190220/?type=3&amp;theater" data-show-text="false">
+                        <blockquote cite="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0" class="fb-xfbml-parse-ignore">
+                            <p>MaxTwit https://twitter.com/maxkolonko</p>
+                            Opublikowany przez
+                            <a href="https://www.facebook.com/M.Max.Kolonko/">Mariusz Max Kolonko</a> na&nbsp;
+                            <a href="https://www.facebook.com/M.Max.Kolonko/posts/1212345432190220:0">8 listopad 2016</a>
+                        </blockquote>
+                    </div>
+                </div>
+                <div id="chartContainer" style="height: 300px; width: 552px;"></div>
+        </div>
+        <div id="footer">
+            <p>&copy Warszawa 2016 <br /><a href="https://rapit.pw/">Koło naukowe RAPIT</a></p>
+        </div>
     </div>
-</div>
-
 </body>
 </html>
