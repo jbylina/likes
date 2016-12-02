@@ -156,9 +156,20 @@ a:hover {
 }
 
 h2 {
-	font-size: 22px;
+	font-size: 23px;
+	font-weight: bold;
+	color: #df6f00;
+}
+
+#sidebar h2 {
+	text-align: center;
+	font-family: "Times New Roman", Times, serif;
+}
+
+ol {
+	font-size: 14px;
 	font-weight:normal;
-	color: #b10d0d;
+	color: #777;
 }
 
 #solid {
@@ -182,6 +193,17 @@ h2 {
 .fb-post {
 	border: 5px solid #046c8b;
 	margin: 0 auto;
+}
+
+#sidebar {
+	width: 20%;
+	min-height: 300px;
+	border-right: 5px solid #046c8b;
+}
+
+#conent {
+	width: 80%;
+	min-height: 300px;
 }
 
 #chartContainer {
