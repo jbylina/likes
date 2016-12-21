@@ -25,9 +25,7 @@ public class PostStatsResource {
 
     @RequestMapping("/test")
     public String test() {
-        Like like = new Like(10L);
-        PostStats test = new PostStats("test");
-        test.getLikes().add(like);
+        PostStats test = new PostStats("https://www.facebook.com/Arsenal/videos/10154511203247713/");
 
         test = postsRepository.save(test);
 

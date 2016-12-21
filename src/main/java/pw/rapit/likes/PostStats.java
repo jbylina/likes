@@ -10,12 +10,12 @@ public class PostStats {
     @Id
     private String id;
 
-    private String postTitle;
+    private String postUrl;
 
     private List<Like> likes;
 
-    public PostStats(String postTitle) {
-        this.postTitle = postTitle;
+    public PostStats(String postUrl) {
+        this.postUrl = postUrl;
         this.likes = new ArrayList<>();
     }
 
@@ -23,11 +23,20 @@ public class PostStats {
         return id;
     }
 
-    public String getPostTitle() {
-        return postTitle;
+    public String getPostUrl() {
+        return postUrl;
     }
 
     public List<Like> getLikes() {
         return likes;
+    }
+
+    @Override
+    public String toString() {
+        return "PostStats{" +
+                "id='" + id + '\'' +
+                ", postUrl='" + postUrl + '\'' +
+                ", likes=" + likes +
+                '}';
     }
 }

@@ -4,19 +4,35 @@ import com.restfb.*;
 import com.restfb.experimental.api.Posts;
 import com.restfb.types.Page;
 import com.restfb.types.Post;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Component;
 
 import static org.apache.commons.lang3.StringUtils.*;
 import static org.apache.commons.lang3.StringUtils.endsWith;
 
+@Component
 public class FacebookFetcher {
 
     LoggedInFacebookClient fbClient;
+
+    @Autowired
+    PostStatsRepository  postStatsRepository;
+
+    public FacebookFetcher() {
+        fbClient = new LoggedInFacebookClient("1774967242758495", "df4be9b7a5bb62ab33c632fcf87d565f");
+    }
 
     public FacebookFetcher(String appId, String secretKey){
         fbClient = new LoggedInFacebookClient(appId, secretKey);
@@ -71,6 +87,29 @@ public class FacebookFetcher {
         }
         return urlArray;
     }
+    @Scheduled(fixedRate = 10000)
+    public void runJob(){
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
+        System.out.println("The time is now " + dateFormat.format(new Date()));
+        List<PostStats> ourList =  postStatsRepository.findAll();
+        int i = 0;
+        for(i = 0; i < ourList.size();i++){
+            PostStats stats  = ourList.get(i);
+            Like currentLike = getLikes(stats.getPostUrl());
+            stats.getLikes().add(currentLike);
+            postStatsRepository.save(stats);
+
+            System.out.println(stats.toString());
+
+            List<String> likesString = stats.getLikes().stream()
+                    .map(like -> "date: " + like.getDate() + "like count: " + like.getCount())
+                    .collect(Collectors.toList());
+
+            System.out.println(String.join(",", likesString));
+        }
+
+    }
+
 
     public class LoggedInFacebookClient extends DefaultFacebookClient {
 
@@ -81,3 +120,4 @@ public class FacebookFetcher {
 
     }
 }
+
