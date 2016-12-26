@@ -1,26 +1,25 @@
-package pw.rapit.likes;
+package pw.rapit.likes.service;
 
-import com.restfb.*;
-import com.restfb.experimental.api.Posts;
+import com.restfb.Connection;
+import com.restfb.DefaultFacebookClient;
+import com.restfb.Parameter;
 import com.restfb.types.Page;
 import com.restfb.types.Post;
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.stream.Collectors;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+import pw.rapit.likes.domain.Like;
+import pw.rapit.likes.domain.PostStats;
+import pw.rapit.likes.domain.PostStatsRepository;
 
-import static org.apache.commons.lang3.StringUtils.*;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.apache.commons.lang3.StringUtils.endsWith;
+import static org.apache.commons.lang3.StringUtils.substringBeforeLast;
 
 @Component
 public class FacebookFetcher {
@@ -28,7 +27,7 @@ public class FacebookFetcher {
     LoggedInFacebookClient fbClient;
 
     @Autowired
-    PostStatsRepository  postStatsRepository;
+    PostStatsRepository postStatsRepository;
 
     public FacebookFetcher() {
         fbClient = new LoggedInFacebookClient("1774967242758495", "df4be9b7a5bb62ab33c632fcf87d565f");

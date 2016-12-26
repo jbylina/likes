@@ -6,8 +6,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import pw.rapit.likes.domain.Like;
+import pw.rapit.likes.service.FacebookFetcher;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RunWith(JUnit4.class)

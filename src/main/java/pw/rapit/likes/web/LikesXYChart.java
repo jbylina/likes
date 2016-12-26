@@ -1,15 +1,21 @@
-package pw.rapit.likes;
+package pw.rapit.likes.web;
 
 import org.apache.commons.compress.utils.IOUtils;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 import org.jfree.data.xy.XYSeries;
 import org.jfree.data.xy.XYSeriesCollection;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+import pw.rapit.likes.domain.PostStats;
+import pw.rapit.likes.domain.PostStatsRepository;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.Map;

@@ -1,4 +1,4 @@
-package pw.rapit.likes;
+package pw.rapit.likes.domain;
 
 import java.util.Date;
 
