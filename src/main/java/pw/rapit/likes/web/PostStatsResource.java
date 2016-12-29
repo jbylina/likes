@@ -41,12 +41,6 @@ public class PostStatsResource {
 
     @RequestMapping("/test_new/{id}")
     public PostStats testNew(@PathVariable String id) {
-        PostStats postStats = postsRepository.findById(id);
-
-        LikesStatus likesStatus = new LikesStatus(new Random().nextLong());
-        postStats.getLikesStatuses().add(likesStatus);
-
-        postsRepository.save(postStats);
-        return postStats;
+        return postsRepository.findById(id);
     }
 }
