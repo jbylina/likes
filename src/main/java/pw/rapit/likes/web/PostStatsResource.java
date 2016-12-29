@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pw.rapit.likes.domain.Like;
+import pw.rapit.likes.domain.LikesStatus;
 import pw.rapit.likes.domain.PostStats;
 import pw.rapit.likes.domain.PostStatsRepository;
 
@@ -18,8 +18,12 @@ public class PostStatsResource {
 
     static final Logger LOG = LoggerFactory.getLogger(PostStatsResource.class);
 
+    private PostStatsRepository postsRepository;
+
     @Autowired
-    PostStatsRepository postsRepository;
+    public PostStatsResource(PostStatsRepository postsRepository) {
+        this.postsRepository = postsRepository;
+    }
 
     @RequestMapping("/test_date")
     public List<PostStats> index() {
@@ -39,8 +43,8 @@ public class PostStatsResource {
     public PostStats testNew(@PathVariable String id) {
         PostStats postStats = postsRepository.findById(id);
 
-        Like like = new Like(new Random().nextLong());
-        postStats.getLikes().add(like);
+        LikesStatus likesStatus = new LikesStatus(new Random().nextLong());
+        postStats.getLikesStatuses().add(likesStatus);
 
         postsRepository.save(postStats);
         return postStats;

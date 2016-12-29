@@ -12,11 +12,11 @@ public class PostStats {
 
     private String postUrl;
 
-    private List<Like> likes;
+    private List<LikesStatus> likesStatuses;
 
     public PostStats(String postUrl) {
         this.postUrl = postUrl;
-        this.likes = new ArrayList<>();
+        this.likesStatuses = new ArrayList<>();
     }
 
     public String getId() {
@@ -27,8 +27,8 @@ public class PostStats {
         return postUrl;
     }
 
-    public List<Like> getLikes() {
-        return likes;
+    public List<LikesStatus> getLikesStatuses() {
+        return likesStatuses;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class PostStats {
         return "PostStats{" +
                 "id='" + id + '\'' +
                 ", postUrl='" + postUrl + '\'' +
-                ", likes=" + likes +
+                ", likesStatuses=" + likesStatuses +
                 '}';
     }
 }

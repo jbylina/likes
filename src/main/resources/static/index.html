@@ -37,8 +37,8 @@
                         }
                     ]
                 };
-                data.likes.forEach(function (like) {
-                    chart_data.data[0].dataPoints.push({x: new Date(like.date), y: like.count})
+                data.likes.forEach(function (likesStatus) {
+                    chart_data.data[0].dataPoints.push({x: new Date(likesStatus.date), y: likesStatus.count})
                 });
                 var chart = new CanvasJS.Chart("chartContainer", chart_data);
                 chart.render();

@@ -24,9 +24,12 @@ import java.util.Set;
 @RestController
 public class LikesXYChart {
 
-    @Autowired
     private PostStatsRepository postStatsRepository;
 
+    @Autowired
+    public LikesXYChart(PostStatsRepository postStatsRepository) {
+        this.postStatsRepository = postStatsRepository;
+    }
 
     private HashMap<Integer, Integer> getLikes() {
         HashMap<Integer, Integer> likesMap = new HashMap<>();
