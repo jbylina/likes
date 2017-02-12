@@ -1,5 +1,7 @@
 package pw.rapit.likes.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import org.springframework.data.annotation.Id;
 
 import java.util.ArrayList;
@@ -12,11 +14,20 @@ public class PostStats {
 
     private String postUrl;
 
+    @JsonIgnore
+    private String pageId;
+
+    @JsonIgnore
+    private String postId;
+
     private List<LikesStatus> likesStatuses;
 
-    public PostStats(String postUrl) {
+    public PostStats(String postUrl, String pageId, String postId) {
         this.postUrl = postUrl;
+        this.pageId = pageId;
+        this.postId = postId;
         this.likesStatuses = new ArrayList<>();
+
     }
 
     public String getId() {
@@ -25,6 +36,14 @@ public class PostStats {
 
     public String getPostUrl() {
         return postUrl;
+    }
+
+    public String getPageId() {
+        return pageId;
+    }
+
+    public String getPostId() {
+        return postId;
     }
 
     public List<LikesStatus> getLikesStatuses() {

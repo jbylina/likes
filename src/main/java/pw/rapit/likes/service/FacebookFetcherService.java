@@ -17,11 +17,10 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang3.StringUtils.split;
-import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
-class FacebookFetcherService {
+public class FacebookFetcherService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FacebookFetcherService.class);
 
@@ -40,6 +39,26 @@ class FacebookFetcherService {
         this.postStatsRepository = postStatsRepository;
     }
 
+    public PostStats addPost(String postUrl) {
+        String pageName = extractPageName(postUrl);
+        String postId = extractPostId(postUrl);
+
+        if (isEmpty(pageName) || isEmpty(postId)) {
+            throw new IllegalArgumentException("Bad url format");
+        }
+
+        String pageId = getPageId(pageName);
+
+        try {
+            getLikesStatus(pageId, postId);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
+        return postStatsRepository.save(new PostStats(postUrl, pageId, postId));
+    }
+
+
     String getPageId(String pageName) {
         Page page = fbClient.fetchObject(pageName, Page.class, Parameter.with("fields", "id"));
         return page.getId();
@@ -55,22 +74,18 @@ class FacebookFetcherService {
     }
 
     @Scheduled(fixedRate = 30000)
-    public void runFetchingJob() {
+    void fetchingJob() {
         LOG.info("Fetching job started");
         List<PostStats> postStatsList = postStatsRepository.findAll();
 
         for (PostStats postStats : postStatsList) {
-            String postUrl = postStats.getPostUrl();
-            LOG.debug("Fetching likes for {}", postUrl);
+            LOG.debug("Fetching likes for {}", postStats.getPostUrl());
 
-            String pageId = getPageId(extractPageName(postUrl));
-            String postId = extractPostId(postUrl);
-
-            LikesStatus likesStatus = getLikesStatus(pageId, postId);
+            LikesStatus likesStatus = getLikesStatus(postStats.getPageId(), postStats.getPostId());
 
             postStats.getLikesStatuses().add(likesStatus);
 
-            LOG.debug("Current likes status is {} [{}]", likesStatus.getCount(), postUrl);
+            LOG.debug("Current likes status is {} [{}]", likesStatus.getCount(), postStats.getPostUrl());
             postStatsRepository.save(postStats);
         }
 
