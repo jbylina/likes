@@ -79,11 +79,11 @@ public class FacebookFetcherService {
         return new LikesStatus(likes.getTotalCount());
     }
 
-    @Scheduled(fixedRate = 30000)
+    @Scheduled(fixedRate = 60000)
     void fetchingJob() {
         LOG.info("Fetching job started");
 
-        List<PostStats> postStatsList = postStatsRepository.findAll();
+        List<PostStats> postStatsList = postStatsRepository.getPostStatsToProcess();
 
         for (PostStats postStats : postStatsList) {
             LOG.debug("Fetching likes for {}", postStats.getPostUrl());
