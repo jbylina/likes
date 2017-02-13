@@ -54,7 +54,7 @@ public class FacebookFetcherServiceIntegrationTest {
         PostStats postStats = new PostStats("https://www.facebook.com/Arsenal/videos/10154511203247713/",
                 "20669912712", "10154511203247713");
         List<PostStats> postStatsList = Collections.singletonList(postStats);
-        when(statsRepository.findAll()).thenReturn(postStatsList);
+        when(statsRepository.getPostStatsToProcess()).thenReturn(postStatsList);
 
         // when
         testedObject.fetchingJob();

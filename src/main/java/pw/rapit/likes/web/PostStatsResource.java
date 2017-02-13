@@ -6,8 +6,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import pw.rapit.likes.domain.LikesStatus;
+import pw.rapit.likes.domain.PostStats;
 import pw.rapit.likes.domain.PostStatsRepository;
 import pw.rapit.likes.service.FacebookFetcherService;
+
+import java.util.List;
 
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
@@ -31,6 +35,16 @@ public class PostStatsResource {
     public ResponseEntity process(@RequestBody ProcessPostRequest processRequest) {
         return ResponseEntity.ok()
                 .body(facebookFetcherService.addPost(processRequest.getPostUrl()));
+    }
+
+    @RequestMapping(value = "/api/get-post-stats/{id}", method = RequestMethod.GET)
+    public ResponseEntity<List<LikesStatus>> getLikesStatuses(@PathVariable String id) {
+        PostStats stats = postStatsRepository.findById(id);
+        if (stats != null) {
+            return ResponseEntity.ok().body(stats.getLikesStatuses());
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     @RequestMapping("/post.html")
