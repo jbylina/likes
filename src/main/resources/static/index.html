@@ -37,7 +37,7 @@
 
 <div class="container-fluid">
     <div class="row">
-        <form role="form" class="col-md-5 col-md-offset-3">
+        <form id="url-form" role="form" class="col-md-5 col-md-offset-3">
             <div id="message-box">
 
             </div>
@@ -45,7 +45,7 @@
             <div class="form-group">
                 <input id="post-url" type="text" class="form-control input-lg" placeholder="Link do postu">
             </div>
-            <button id="submit" type="button" class="btn btn-primary btn-lg "
+            <button id="submit-button" type="submit" class="btn btn-primary btn-lg "
                     data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Przetwarzanie">
                 Monitoruj
             </button>
@@ -59,10 +59,9 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
 
 <script>
-    $('#submit').on('click', function () {
-        var $this = $(this);
-        $this.button('loading');
-        $("#message-box").empty();
+    $('#url-form').on('submit', function (event) {
+        event.preventDefault();
+        $('#submit-button').button('loading');
 
         var url = $("#post-url").val();
 
@@ -76,9 +75,9 @@
             error: function(xhr, textStatus, error){
                 $("#message-box").replaceWith("<div class=\"alert alert-danger\"><strong>Błąd! </strong>"
                     + xhr.responseJSON.message + "</div>");
-                $this.button('reset');
+                $('#submit-button').button('reset');
             },
-            contentType: "application/json",
+            contentType: 'application/json',
             dataType: 'json'
         });
     });

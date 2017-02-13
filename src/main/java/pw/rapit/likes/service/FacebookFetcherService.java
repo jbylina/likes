@@ -25,7 +25,7 @@ public class FacebookFetcherService {
     private static final Logger LOG = LoggerFactory.getLogger(FacebookFetcherService.class);
 
     private static final Pattern FB_URL_PATTERN =
-            Pattern.compile("(?:(?:http|https):\\/\\/)?(?:www.)?(mbasic.facebook|m\\.facebook|facebook|fb)\\.(com|me)\\/");
+            Pattern.compile("(?:(?:http|https)://)?(?:www.)?(mbasic.facebook|m\\.facebook|facebook|fb)\\.(com|me)/");
 
     private static final String FORWARD_SLASH = "/";
 
@@ -40,11 +40,17 @@ public class FacebookFetcherService {
     }
 
     public PostStats addPost(String postUrl) {
+        if (!FB_URL_PATTERN.matcher(postUrl).find()) {
+            throw new IllegalArgumentException("Bad url format");
+        }
+
         String pageName = extractPageName(postUrl);
         String postId = extractPostId(postUrl);
 
-        if (isEmpty(pageName) || isEmpty(postId)) {
-            throw new IllegalArgumentException("Bad url format");
+        if (isEmpty(pageName)) {
+            throw new IllegalArgumentException("Empty page Id");
+        } else if (isEmpty(postId)) {
+            throw new IllegalArgumentException("Empty post Id");
         }
 
         String pageId = getPageId(pageName);
@@ -104,7 +110,14 @@ public class FacebookFetcherService {
         Matcher matcher = FB_URL_PATTERN.matcher(url);
         if (matcher.find()){
             String substringWithPageName = substring(url, matcher.end());
-            return split(substringWithPageName, FORWARD_SLASH, 4)[sectionNumber];
+
+            String[] split = split(substringWithPageName, FORWARD_SLASH, 4);
+
+            if (sectionNumber < split.length) {
+                return split[sectionNumber];
+            } else {
+                return null;
+            }
         }
         return url;
     }
