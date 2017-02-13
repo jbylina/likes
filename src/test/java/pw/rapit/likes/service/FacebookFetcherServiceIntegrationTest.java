@@ -51,12 +51,13 @@ public class FacebookFetcherServiceIntegrationTest {
     @Test
     public void shouldFetchLikesForPage() throws Exception {
         // given
-        PostStats postStats = new PostStats("https://www.facebook.com/Arsenal/videos/10154511203247713/");
+        PostStats postStats = new PostStats("https://www.facebook.com/Arsenal/videos/10154511203247713/",
+                "20669912712", "10154511203247713");
         List<PostStats> postStatsList = Collections.singletonList(postStats);
-        when(statsRepository.findAll()).thenReturn(postStatsList);
+        when(statsRepository.getPostStatsToProcess()).thenReturn(postStatsList);
 
         // when
-        testedObject.runFetchingJob();
+        testedObject.fetchingJob();
 
         // then
         verify(statsRepository, times(1)).save(any(PostStats.class));

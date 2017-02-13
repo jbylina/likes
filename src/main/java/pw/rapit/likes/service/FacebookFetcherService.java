@@ -17,16 +17,15 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static org.apache.commons.lang3.StringUtils.split;
-import static org.apache.commons.lang3.StringUtils.substring;
+import static org.apache.commons.lang3.StringUtils.*;
 
 @Service
-class FacebookFetcherService {
+public class FacebookFetcherService {
 
     private static final Logger LOG = LoggerFactory.getLogger(FacebookFetcherService.class);
 
     private static final Pattern FB_URL_PATTERN =
-            Pattern.compile("(?:(?:http|https):\\/\\/)?(?:www.)?(mbasic.facebook|m\\.facebook|facebook|fb)\\.(com|me)\\/");
+            Pattern.compile("(?:(?:http|https)://)?(?:www.)?(mbasic.facebook|m\\.facebook|facebook|fb)\\.(com|me)/");
 
     private static final String FORWARD_SLASH = "/";
 
@@ -39,6 +38,32 @@ class FacebookFetcherService {
         this.fbClient = fbClient;
         this.postStatsRepository = postStatsRepository;
     }
+
+    public PostStats addPost(String postUrl) {
+        if (!FB_URL_PATTERN.matcher(postUrl).find()) {
+            throw new IllegalArgumentException("Bad url format");
+        }
+
+        String pageName = extractPageName(postUrl);
+        String postId = extractPostId(postUrl);
+
+        if (isEmpty(pageName)) {
+            throw new IllegalArgumentException("Empty page Id");
+        } else if (isEmpty(postId)) {
+            throw new IllegalArgumentException("Empty post Id");
+        }
+
+        String pageId = getPageId(pageName);
+
+        try {
+            getLikesStatus(pageId, postId);
+        } catch (Exception e) {
+            throw new IllegalArgumentException(e.getMessage());
+        }
+
+        return postStatsRepository.save(new PostStats(postUrl, pageId, postId));
+    }
+
 
     String getPageId(String pageName) {
         Page page = fbClient.fetchObject(pageName, Page.class, Parameter.with("fields", "id"));
@@ -54,23 +79,19 @@ class FacebookFetcherService {
         return new LikesStatus(likes.getTotalCount());
     }
 
-    @Scheduled(fixedRate = 30000)
-    public void runFetchingJob() {
+    @Scheduled(fixedRate = 60000)
+    void fetchingJob() {
         LOG.info("Fetching job started");
-        List<PostStats> postStatsList = postStatsRepository.findAll();
+
+        List<PostStats> postStatsList = postStatsRepository.getPostStatsToProcess();
 
         for (PostStats postStats : postStatsList) {
-            String postUrl = postStats.getPostUrl();
-            LOG.debug("Fetching likes for {}", postUrl);
+            LOG.debug("Fetching likes for {}", postStats.getPostUrl());
 
-            String pageId = getPageId(extractPageName(postUrl));
-            String postId = extractPostId(postUrl);
+            LikesStatus likesStatus = getLikesStatus(postStats.getPageId(), postStats.getPostId());
+            postStats.addLikeStatus(likesStatus);
 
-            LikesStatus likesStatus = getLikesStatus(pageId, postId);
-
-            postStats.getLikesStatuses().add(likesStatus);
-
-            LOG.debug("Current likes status is {} [{}]", likesStatus.getCount(), postUrl);
+            LOG.debug("Current likes status is {} [{}]", likesStatus.getCount(), postStats.getPostUrl());
             postStatsRepository.save(postStats);
         }
 
@@ -89,7 +110,14 @@ class FacebookFetcherService {
         Matcher matcher = FB_URL_PATTERN.matcher(url);
         if (matcher.find()){
             String substringWithPageName = substring(url, matcher.end());
-            return split(substringWithPageName, FORWARD_SLASH, 4)[sectionNumber];
+
+            String[] split = split(substringWithPageName, FORWARD_SLASH, 4);
+
+            if (sectionNumber < split.length) {
+                return split[sectionNumber];
+            } else {
+                return null;
+            }
         }
         return url;
     }

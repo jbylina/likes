@@ -4,7 +4,7 @@ body {
 	text-align: center;
 	margin: 0;
 	height: 100%;
-	background: #002e3c url(../images/bg_top.png) 0cm 0cm;
+	background: #002e3c url(../img/bg_top.png) 0cm 0cm;
 	-webkit-background-size: cover;
 	-moz-background-size: cover;
 	-o-background-size: cover;  
@@ -95,7 +95,7 @@ a:hover {
 	height: 310px;
 	margin-top: 20px;
 	float: left;
-	background: #FFF url(../images/bg_box.png) repeat-x bottom;
+	background: #FFF url(../img/bg_box.png) repeat-x bottom;
 	border: 5px solid #046c8b;
 }
 
@@ -177,7 +177,7 @@ ol {
 	height: auto;
 	float: left;
 	font-family: Arial, Helvetica, sans-serif;
-	background: #FFF url(../images/bg_box.jpg) repeat-x bottom;
+	background: #FFF url(../img/bg_box.jpg) repeat-x bottom;
 	margin-top: 10px;
 	padding: 10px;
 	border: 5px solid #046c8b;

@@ -14,6 +14,7 @@
 </head>
 <body class="application">
 
+
 <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
     <div class="container-fluid">
         <div class="navbar-header">
@@ -37,53 +38,48 @@
 
 <div class="container-fluid">
     <div class="row">
-        <form id="url-form" role="form" class="col-md-5 col-md-offset-3">
-            <div id="message-box">
-
+        <div class="col-md-12">
+            <div id="chart-likes">
             </div>
-
-            <div class="form-group">
-                <input id="post-url" type="text" class="form-control input-lg" placeholder="Link do postu">
-            </div>
-            <button id="submit-button" type="submit" class="btn btn-primary btn-lg "
-                    data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Przetwarzanie">
-                Monitoruj
-            </button>
-        </form>
+        </div>
     </div>
 </div>
-
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script>
-    $('#url-form').on('submit', function (event) {
-        event.preventDefault();
-        $('#submit-button').button('loading');
+    $.urlParam = function (name) {
+        var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+        if (results == null) {
+            return null;
+        }
+        else {
+            return results[1] || 0;
+        }
+    };
 
-        var url = $("#post-url").val();
+    window.onload = function () {
+        var process_id = $.urlParam('id');
 
-        $.ajax({
-            type: 'POST',
-            url: '/api/process-post',
-            data: JSON.stringify({post_url: url}),
-            success: function (result) {
-                window.location.href = '/post.html?id=' + result.id;
-            },
-            error: function(xhr, textStatus, error){
-                $("#message-box").replaceWith("<div class=\"alert alert-danger\"><strong>Błąd! </strong>"
-                    + xhr.responseJSON.message + "</div>");
-                $('#submit-button').button('reset');
-            },
-            contentType: 'application/json',
-            dataType: 'json'
-        });
-    });
+        $.get("/api/get-post-stats/" + process_id, function (data) {
 
+            var plot_data = {
+                x: [],
+                y: [],
+                type: 'scatter'
+            };
+
+            for (var i = 0; i < data.length; i++) {
+                plot_data.x.push(data[i].date);
+                plot_data.y.push(data[i].count);
+            }
+
+            Plotly.newPlot('chart-likes', [plot_data]);
+        }, "json");
+    };
 </script>
-
-
 </body>
 </html>
