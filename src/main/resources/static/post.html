@@ -38,8 +38,10 @@
 
 <div class="container-fluid">
     <div class="row">
-        <div class="col-md-12">
-            <div id="chart-likes">
+        <div class="chart-wrapper">
+            <div id="chart-title" class="chart-title"></div>
+            <div class="chart-stage">
+                <div id="chart-likes"></div>
             </div>
         </div>
     </div>
@@ -64,18 +66,21 @@
     window.onload = function () {
         var process_id = $.urlParam('id');
 
-        $.get("/api/get-post-stats/" + process_id, function (data) {
+        $.get("/api/get-post-stats/" + process_id, function (response) {
 
+            var likes_statuses = response.likesStatuses;
             var plot_data = {
                 x: [],
                 y: [],
                 type: 'scatter'
             };
 
-            for (var i = 0; i < data.length; i++) {
-                plot_data.x.push(data[i].date);
-                plot_data.y.push(data[i].count);
+            for (var i = 0; i < likes_statuses.length; i++) {
+                plot_data.x.push(likes_statuses[i].date);
+                plot_data.y.push(likes_statuses[i].count);
             }
+
+            $('#chart-title').append(response.postUrl);
 
             Plotly.newPlot('chart-likes', [plot_data]);
         }, "json");

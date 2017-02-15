@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pw.rapit.likes.domain.LikesStatus;
 import pw.rapit.likes.domain.PostStats;
 import pw.rapit.likes.domain.PostStatsRepository;
 import pw.rapit.likes.service.FacebookFetcherService;
@@ -32,19 +31,25 @@ public class PostStatsResource {
     }
 
     @RequestMapping(value = "/api/process-post", method = RequestMethod.POST)
-    public ResponseEntity process(@RequestBody ProcessPostRequest processRequest) {
+    public ResponseEntity<PostStats> process(@RequestBody ProcessPostRequest processRequest) {
         return ResponseEntity.ok()
                 .body(facebookFetcherService.addPost(processRequest.getPostUrl()));
     }
 
     @RequestMapping(value = "/api/get-post-stats/{id}", method = RequestMethod.GET)
-    public ResponseEntity<List<LikesStatus>> getLikesStatuses(@PathVariable String id) {
+    public ResponseEntity<PostStats> getLikesStatuses(@PathVariable String id) {
         PostStats stats = postStatsRepository.findById(id);
         if (stats != null) {
-            return ResponseEntity.ok().body(stats.getLikesStatuses());
+            return ResponseEntity.ok().body(stats);
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @RequestMapping("/api/get-last-posts")
+    public ResponseEntity<List<PostStats>> getLastPosts() {
+        return ResponseEntity.ok()
+                .body(postStatsRepository.findTop10ByOrderByCreateDateDesc());
     }
 
     @RequestMapping("/post.html")
@@ -55,4 +60,6 @@ public class PostStatsResource {
             return "redirect:/";
         }
     }
+
+
 }

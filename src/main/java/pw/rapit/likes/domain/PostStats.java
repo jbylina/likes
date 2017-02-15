@@ -1,8 +1,10 @@
 package pw.rapit.likes.domain;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,9 @@ public class PostStats {
     private int likesStatusesCount;
 
     private List<LikesStatus> likesStatuses;
+
+    @CreatedDate
+    private LocalDateTime createDate;
 
     public PostStats(String postUrl, String pageId, String postId) {
         this.postUrl = postUrl;
@@ -58,6 +63,10 @@ public class PostStats {
     public void addLikeStatus(LikesStatus status) {
         this.likesStatuses.add(status);
         this.likesStatusesCount++;
+    }
+
+    public LocalDateTime getCreateDate() {
+        return createDate;
     }
 
     @Override
