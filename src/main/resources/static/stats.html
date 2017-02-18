@@ -38,7 +38,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-5 col-md-offset-3">
-            <ul id="recent-list" class="list-group">
+            <ul id="stats" class="list-group">
 
             </ul>
         </div>
@@ -51,7 +51,28 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jQuery-Knob/1.2.13/jquery.knob.min.js"></script>
 
 <script>
+    function msToTime(duration) {
+        var milliseconds = parseInt((duration%1000)/100)
+            , seconds = parseInt((duration/1000)%60)
+            , minutes = parseInt((duration/(1000*60))%60)
+            , hours = parseInt((duration/(1000*60*60))%24);
 
+        hours = (hours < 10) ? "0" + hours : hours;
+        minutes = (minutes < 10) ? "0" + minutes : minutes;
+        seconds = (seconds < 10) ? "0" + seconds : seconds;
+
+        return hours + ":" + minutes + ":" + seconds + "." + milliseconds;
+    }
+
+    window.onload = function () {
+        $.get("/api/stats/", function (response) {
+
+            var stats_list = $('#stats');
+            stats_list.append('<li class="list-group-item"> Total API calls: ' + response.totalProcessedPosts + '</a>');
+            stats_list.append('<li class="list-group-item"> Total time spent: ' + msToTime(response.totalJobDuration) + '</a>');
+
+        }, "json");
+    };
 </script>
 
 </body>
