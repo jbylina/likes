@@ -68,8 +68,8 @@
         $.get("/api/stats/", function (response) {
 
             var stats_list = $('#stats');
-            stats_list.append('<li class="list-group-item"> Total API calls: ' + response.totalProcessedPosts + '</a>');
-            stats_list.append('<li class="list-group-item"> Total time spent: ' + msToTime(response.totalJobDuration) + '</a>');
+            stats_list.append('<li class="list-group-item"> Liczba wywołań API facebook.com: ' + response.totalProcessedPosts + '</a>');
+            stats_list.append('<li class="list-group-item"> Sumaryczny czas spędzony na przetwarzaniu: ' + msToTime(response.totalJobDuration) + '</a>');
 
         }, "json");
     };
