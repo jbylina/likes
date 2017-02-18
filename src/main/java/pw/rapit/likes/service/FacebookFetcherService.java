@@ -9,10 +9,12 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import pw.rapit.likes.domain.LikesStatus;
-import pw.rapit.likes.domain.PostStats;
-import pw.rapit.likes.domain.PostStatsRepository;
+import pw.rapit.likes.domain.*;
+import pw.rapit.likes.domain.repositories.JobStatsRepository;
+import pw.rapit.likes.domain.repositories.PostStatsRepository;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -29,14 +31,15 @@ public class FacebookFetcherService {
 
     private static final String FORWARD_SLASH = "/";
 
-    private FacebookClient fbClient;
-
-    private PostStatsRepository postStatsRepository;
+    private final PostStatsRepository postStatsRepository;
+    private final JobStatsRepository jobStatsRepository;
+    private final FacebookClient fbClient;
 
     @Autowired
-    FacebookFetcherService(FacebookClient fbClient, PostStatsRepository postStatsRepository) {
+    FacebookFetcherService(FacebookClient fbClient, PostStatsRepository postStatsRepository, JobStatsRepository jobStatsRepository) {
         this.fbClient = fbClient;
         this.postStatsRepository = postStatsRepository;
+        this.jobStatsRepository = jobStatsRepository;
     }
 
     public PostStats addPost(String postUrl) {
@@ -47,10 +50,10 @@ public class FacebookFetcherService {
         String pageName = extractPageName(postUrl);
         String postId = extractPostId(postUrl);
 
-        if (isEmpty(pageName)) {
-            throw new IllegalArgumentException("Empty page Id");
-        } else if (isEmpty(postId)) {
-            throw new IllegalArgumentException("Empty post Id");
+        if (isBlank(pageName)) {
+            throw new IllegalArgumentException("Empty page name");
+        } else if (isBlank(postId)) {
+            throw new IllegalArgumentException("Empty post id");
         }
 
         String pageId = getPageId(pageName);
@@ -81,8 +84,9 @@ public class FacebookFetcherService {
 
     @Scheduled(fixedRate = 60000)
     void fetchingJob() {
-        LOG.info("Fetching job started");
+        LocalDateTime jobStart = LocalDateTime.now();
 
+        LOG.info("Fetching started");
         List<PostStats> postStatsList = postStatsRepository.getPostStatsToProcess();
 
         for (PostStats postStats : postStatsList) {
@@ -95,7 +99,15 @@ public class FacebookFetcherService {
             postStatsRepository.save(postStats);
         }
 
-        LOG.info("Fetching job finished. Processed {} posts", postStatsList.size());
+        LOG.info("Fetching finished. Processed {} posts", postStatsList.size());
+
+        LocalDateTime jobEnd = LocalDateTime.now();
+        Duration jobDuration = Duration.between(jobStart, jobEnd);
+
+        if (!postStatsList.isEmpty()) {
+            JobStats stats = new JobStats(postStatsList.size(), jobStart, jobEnd, jobDuration.toMillis());
+            jobStatsRepository.save(stats);
+        }
     }
 
     static String extractPostId(final String url) {

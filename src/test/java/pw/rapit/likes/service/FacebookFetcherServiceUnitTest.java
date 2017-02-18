@@ -3,7 +3,8 @@ package pw.rapit.likes.service;
 import com.restfb.FacebookClient;
 import org.junit.Before;
 import org.junit.Test;
-import pw.rapit.likes.domain.PostStatsRepository;
+import pw.rapit.likes.domain.repositories.JobStatsRepository;
+import pw.rapit.likes.domain.repositories.PostStatsRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -18,13 +19,16 @@ public class FacebookFetcherServiceUnitTest {
 
     private PostStatsRepository postStatsRepository;
 
+    private JobStatsRepository jobStatsRepository;
+
     private FacebookClient facebookClient;
 
     @Before
     public void setUp() throws Exception {
         facebookClient = mock(FacebookClient.class);
         postStatsRepository = mock(PostStatsRepository.class);
-        testedObject = new FacebookFetcherService(facebookClient, postStatsRepository);
+        jobStatsRepository = mock(JobStatsRepository.class);
+        testedObject = new FacebookFetcherService(facebookClient, postStatsRepository, jobStatsRepository);
     }
 
     @Test

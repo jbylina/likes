@@ -6,8 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import pw.rapit.likes.domain.PostStats;
-import pw.rapit.likes.domain.PostStatsRepository;
+import pw.rapit.likes.domain.*;
+import pw.rapit.likes.domain.repositories.JobStatsRepository;
+import pw.rapit.likes.domain.repositories.PostStatsRepository;
 import pw.rapit.likes.service.FacebookFetcherService;
 
 import java.util.List;
@@ -19,15 +20,16 @@ public class PostStatsResource {
 
     static final Logger LOG = LoggerFactory.getLogger(PostStatsResource.class);
 
-    private FacebookFetcherService facebookFetcherService;
-
-    private PostStatsRepository postStatsRepository;
+    private final FacebookFetcherService facebookFetcherService;
+    private final PostStatsRepository postStatsRepository;
+    private final JobStatsRepository jobStatsRepository;
 
 
     @Autowired
-    public PostStatsResource(FacebookFetcherService facebookFetcherService, PostStatsRepository postStatsRepository) {
+    public PostStatsResource(FacebookFetcherService facebookFetcherService, PostStatsRepository postStatsRepository, JobStatsRepository jobStatsRepository) {
         this.facebookFetcherService = facebookFetcherService;
         this.postStatsRepository = postStatsRepository;
+        this.jobStatsRepository = jobStatsRepository;
     }
 
     @RequestMapping(value = "/api/process-post", method = RequestMethod.POST)
@@ -36,7 +38,7 @@ public class PostStatsResource {
                 .body(facebookFetcherService.addPost(processRequest.getPostUrl()));
     }
 
-    @RequestMapping(value = "/api/get-post-stats/{id}", method = RequestMethod.GET)
+    @RequestMapping("/api/get-post-stats/{id}")
     public ResponseEntity<PostStats> getLikesStatuses(@PathVariable String id) {
         PostStats stats = postStatsRepository.findById(id);
         if (stats != null) {
@@ -52,6 +54,12 @@ public class PostStatsResource {
                 .body(postStatsRepository.findTop10ByOrderByCreateDateDesc());
     }
 
+    @RequestMapping("/api/stats")
+    public ResponseEntity<AggregatedJobStats> getStats() {
+        return ResponseEntity.ok()
+                .body(jobStatsRepository.overallJobStats());
+    }
+
     @RequestMapping("/post.html")
     public String postPreviewPage(@RequestParam String id) {
         if(isNotEmpty(id) && postStatsRepository.findById(id) != null) {
@@ -60,6 +68,4 @@ public class PostStatsResource {
             return "redirect:/";
         }
     }
-
-
 }

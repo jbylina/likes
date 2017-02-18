@@ -1,7 +1,8 @@
-package pw.rapit.likes.domain;
+package pw.rapit.likes.domain.repositories;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
+import pw.rapit.likes.domain.PostStats;
 
 import java.util.List;
 

@@ -12,7 +12,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import pw.rapit.likes.domain.LikesStatus;
 import pw.rapit.likes.domain.PostStats;
-import pw.rapit.likes.domain.PostStatsRepository;
+import pw.rapit.likes.domain.repositories.PostStatsRepository;
 
 import java.util.Collections;
 import java.util.List;
